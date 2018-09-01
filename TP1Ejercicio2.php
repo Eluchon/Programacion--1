@@ -34,14 +34,26 @@ for($i=0;$i<7;$i++){
 }
 ?>
 <br>
+
 <?php
 
 echo "Ejercicio B: <br>";
-
-echo "texto<br>";
 ?>
-
 <br>
+<?php
+$ruedas_vehiculos=array('barco'=>'0','moto'=>'2','auto'=>'4');
+echo "Ruedas de un barco= $ruedas_vehiculos[barco]<br>";
+?>
+<br>
+<?php
+echo "Ruedas de una moto= $ruedas_vehiculos[moto]<br>";
+?>
+<br>
+<?php
+echo "Ruedas de un auto= $ruedas_vehiculos[auto]<br>";
+?>
+<br>
+
 <?php
 
 echo "Ejercicio C: <br>";
