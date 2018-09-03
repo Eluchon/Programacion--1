@@ -41,17 +41,21 @@ echo "Ejercicio B: <br>";
 ?>
 <br>
 <?php
-$ruedas_vehiculos=array('barco'=>'0','moto'=>'2','auto'=>'4');
-echo "Ruedas de un barco= $ruedas_vehiculos[barco]<br>";
+$casa['Cocinas']=1;
+$casa['Dormitorios']=3;
+$casa['Salones']=1;
+$casa['Baños']=2;
+
+echo "La casa posee las siguientes habitaciones: <br>";
+
+foreach ($casa as $clave => $valor){
+    echo "Cantidad de $clave : $valor <br>";
+}
+
+
 ?>
-<br>
-<?php
-echo "Ruedas de una moto= $ruedas_vehiculos[moto]<br>";
-?>
-<br>
-<?php
-echo "Ruedas de un auto= $ruedas_vehiculos[auto]<br>";
-?>
+
+
 <br>
 
 <?php
