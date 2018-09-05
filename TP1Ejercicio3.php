@@ -3,7 +3,7 @@
 <head>
     <title>TP1 Ejercicio 3</title>
 </head>
-
+<body>
 <?php
 
 

@@ -1,9 +1,9 @@
 <html>
-<body>
+
 <head>
     <title>TP1 Ejercicio 5</title>
 </head>
-
+<body>
 <?php
 
 

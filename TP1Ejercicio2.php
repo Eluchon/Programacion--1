@@ -1,9 +1,9 @@
 <html>
-<body>
+
 <head>
     <title>TP1 Ejercicio 2</title>
 </head>
-
+<body>
 <?php
 
 
@@ -29,12 +29,10 @@ echo "Dias de la semana:<br>";
 <br>
 <?php
 
-for($i=0;$i<7;$i++){
-    echo "$semana[$i]<br>";
-}
+print_r($semana);
 ?>
 <br>
-
+<br>
 <?php
 
 echo "Ejercicio B: <br>";
@@ -46,28 +44,44 @@ $casa['Dormitorios']=3;
 $casa['Salones']=1;
 $casa['Baños']=2;
 
-echo "La casa posee las siguientes habitaciones: <br>";
 
-foreach ($casa as $clave => $valor){
-    echo "Cantidad de $clave : $valor <br>";
-}
+
+print_r($casa);
 
 
 ?>
 
-
+<br>
 <br>
 
 <?php
 
 echo "Ejercicio C: <br>";
-echo 'texto<br>';
+
+
+$array3d[0][1][1]="0";
+$array3d[0][1][2]="9";
+$array3d[0][2][3]="10";
+$array3d[0][2][4]="19";
+$array3d[1][3][1]="20";
+$array3d[1][3][2]="29";
+echo "<pre>";
+print_r($array3d);
+echo "</pre>";
 ?>
 <br>
 <?php
 
+
 echo "Ejercicio D: <br>";
-echo "texto<br>";
+
+$par2d['Base de Datos']['Dat1']="42";
+$par2d['Base de Datos']['Dat2']="32";
+$par2d['Servidor']['Backup1']="2342345";
+$par2d['Servidor']['Backup2']="456456456";
+echo "<pre>";
+print_r($par2d);
+echo "</pre>"
 ?>
 </body>
 </html>

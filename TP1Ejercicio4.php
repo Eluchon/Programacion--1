@@ -1,9 +1,9 @@
 <html>
-<body>
+
 <head>
     <title>TP1 Ejercicio 4</title>
 </head>
-
+<body>
 <?php
 
 
@@ -24,11 +24,10 @@ $array=explode(",",$string);
 
 echo "El contenido del array es:<br>";
 
-foreach($array as $valor){
-    echo "$valor <br>";
-}
+print_r($array);
 
 ?>
+<br>
 <br>
 <?php
 
@@ -42,10 +41,11 @@ $numeros[2]=10;
 $numeros[3]=17;
 
 echo "El array de numeros esta formado por:<br>";
-foreach($numeros as $valor){
-    echo "$valor <br>";
-}
 
+print_r($numeros);
+?>
+<br>
+<?php
 $string2=implode(",",$numeros);
 
 echo "El contenido del string es: $string2";
