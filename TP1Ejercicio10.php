@@ -2,7 +2,7 @@
 
 <head>
     <title>TP1 Ejercicio 10</title>
-    <link type="text/css" rel="stylesheet" href="styles.css">
+
 </head>
 <body>
 <?php
