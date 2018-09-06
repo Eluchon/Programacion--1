@@ -14,21 +14,18 @@ $string="1,2,3,4;5,6,7,8;9,10,11,12;13,14,15,16;17,18,19,20;21,22,23,24;25,26,27
 ?>
 <br>
 <?php
-$array=explode(";",$string);
-$string2=implode(",",$array);
-$array2=explode(",",$string2);
+
+$array2=explode(",",implode(",",explode(";",$string)));
 print_r($array2);
 ?>
 <br>
 <br>
 <?php
-$conta=count($array2);
-$div=ceil($conta/2);
+$div=ceil(count($array2)/2);
 
 $array3=array_chunk($array2,$div);
 print_r($array3);
 ?>
-<br>
 <br>
 <?php
 echo "<table>";
