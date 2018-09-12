@@ -1,26 +1,18 @@
 body {
-    background-color: #3e94ec;
-    position: absolute;
-    left: 40%;
+    background-color: ghostwhite;
 }
 
-h1{
-    font-style: normal;
-    font-variant-ligatures: normal;
-    font-variant-caps: normal;
-    font-variant-numeric: normal;
-    font-variant-east-asian: normal;
-    font-weight: 900;
-    font-stretch: normal;
-    font-size: 15.5px;
-    line-height: 15px;
-    font-family: ProximaNova, sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 1.8px;
+h1 {
+    color: white;
+    text-align: center;
 }
 
-a{
-    font-family: "Arial Black";
+p {
+    font-family: verdana;
+    font-size: 20px;
+}
+table {
+    border-collapse: collapse;
 }
 
 table, th, td {
