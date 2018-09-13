@@ -22,6 +22,13 @@
         if (($_POST["usuario"] == ($lista[$clave]["usuario"]))and ($_POST["pass"]==($lista[$clave]["contrasena"]))) {
             echo " El usuario existe: ";
             echo " <br>";
+            echo "Usuario: ".$lista[$clave]["usuario"];
+            echo " <br>";
+            echo "Password: ".$lista[$clave]["contrasena"];
+            echo " <br>";
+            echo "Mail: ".$lista[$clave]["mail"];
+            echo " <br>";
+            echo " <br>";
             print_r($lista[$clave]);
         } elseif(($_POST["usuario"] == ($lista[$clave]["usuario"]))and ($_POST["pass"]!=($lista[$clave]["contrasena"]))) {
             echo "Password Incorrecto";
