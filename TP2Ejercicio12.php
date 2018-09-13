@@ -21,7 +21,6 @@ echo "Hoy es: ".date("j-F-Y");
 <?php
 echo "Mes: "."<select name='mes'>";
         for ($b=1;$b < 2; $b++)  { // no se porq aca si pongo 2 se soluciona todo
-            $mes = $b;
             switch ($b) {
                 case 1:
                     $mes = "Enero";
