@@ -1,0 +1,15 @@
+<?php
+$id = $_POST['id'];
+$nom = $_POST['nombre'];
+$ape = $_POST['apellido'];
+$doc = $_POST['documento'];
+$edad = $_POST['edad'];
+include("./Conection.php");
+$params= array('id'=>$id,'nombre' => $nom,'apellido' => $ape,'documento'=> $doc ,'edad'=> $edad);
+print_r($params);
+$sql = "UPDATE persona SET nombre = :nombre, apellido= :apellido , documento= :documento , edad= :edad  WHERE `id` = :id";
+$ejecucionSQL = $conexion->prepare($sql);
+$ejecucionSQL ->execute($params);
+header('Location: Ejercicio5a.php');
+exit;
+?>
