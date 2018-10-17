@@ -20,6 +20,7 @@
     <table style="border: black; border-style: solid">
 
 <?php
+
 $var = 0;
 for($i = 0; $i < $_GET["filas"]; $i++) {
     echo "<tr>";

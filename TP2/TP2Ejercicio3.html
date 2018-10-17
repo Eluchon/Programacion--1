@@ -5,38 +5,44 @@
 </head>
 <body>
 <form action="TP2Ejercicio3.php" method="get">
-    Texto: <input type="text" name="texto1">
+    <div> Texto: <input type="text" name="texto1"></div>
     <br>
-    Texto: <input type="text" name="texto2">
+    <div> Texto: <input type="text" name="texto2"></div>
     <br>
-    Password: <input type="hidden" name="oculto" value="estoy escondido">
+    <div>Password: <input type="hidden" name="oculto" value="estoy escondido">
+    <input type="password" name="clave"></div>
     <br>
-    <input type="password" name="clave">
+    Checkboxs:
     <br>
-    <input type="checkbox" name="check1">
+        <div><input type="checkbox" name="check1"></div>
     <br>
-    <input type="checkbox" name="check2">
+            <div><input type="checkbox" name="check2"></div>
     <br>
-    <input type="checkbox" name="check3">
+                <div><input type="checkbox" name="check3"></div>
     <br>
+    Radio Grupo 1:
     <fieldset name="grupo1">
         <input type="radio" name="radio1" value="1">
         <input type="radio" name="radio1" value="2">
         <input type="radio" name="radio1" value="3">
     </fieldset>
     <br>
+    Radio Grupo 2:
     <fieldset name="grupo2">
         <input type="radio" name="radio2" value="1">
         <input type="radio" name="radio2" value="2">
         <input type="radio" name="radio2" value="3">
     </fieldset>
     <br>
+    Lista:
     <select name="lista">
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
         <option value="4">4</option>
     </select>
+    <br>
+    <br>
     <input type="submit">
 </form>
 </body>
