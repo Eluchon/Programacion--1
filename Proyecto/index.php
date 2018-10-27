@@ -1,5 +1,5 @@
 <?php
- header('Content-Type: text/html; charset=ISO-8859-1');
+header('Content-Type: text/html; charset=utf-8');
 //incluir el archivo principal
 include("Slim/Slim.php");
 
@@ -13,45 +13,73 @@ $app = new \Slim\Slim();
 //http:///www.google.com/
 //localhost/apirest/index.php/ => "Hola mundo ...."
 
-$app->get(
-    '/vehiculos',function() use ($app){
-    include("./Connection.php");
-    $sql2 = " SET NAMES utf8 ";
-    $ejecucionSQL2 = $conexion->prepare($sql2);
-    $ejecucionSQL2 ->execute();
-    $sql = "SELECT * FROM vehiculo ";
-    $ejecucionSQL = $conexion->prepare($sql);
-    $ejecucionSQL ->execute();
+$app->group('/vehiculos', function () use ($app) {
+    $app->get(
+        '/', function () use ($app) {
+        include("./Connection.php");
+        $sql2 = " SET NAMES utf8 ";
+        $ejecucionSQL2 = $conexion->prepare($sql2);
+        $ejecucionSQL2->execute();
+        $sql = "SELECT * FROM vehiculo ";
+        $ejecucionSQL = $conexion->prepare($sql);
+        $ejecucionSQL->execute();
 
-    $vehiculos=$ejecucionSQL->fetchAll(PDO::FETCH_ASSOC);
-    	//json
-   //print_r($vehiculos);
+        $vehiculos = $ejecucionSQL->fetchAll(PDO::FETCH_ASSOC);
+        //json
+        //print_r($vehiculos);
 
-  echo json_encode($vehiculos);
+        echo json_encode($vehiculos);
     }
-);
+    );
+    $app->get(
+        '/:nombre', function ($nombre) use ($app) {
+        //almaceno el ID
+        $id = $nombre;
+        include("./Connection.php");
+        $sql2 = " SET NAMES utf8 ";
+        $ejecucionSQL2 = $conexion->prepare($sql2);
+        $ejecucionSQL2->execute();
+        $sql = "SELECT * FROM vehiculo WHERE id = :id ";
+        $ejecucionSQL = $conexion->prepare($sql);
+        $ejecucionSQL->execute(array("id" => $id));
+        $vehiculos = $ejecucionSQL->fetch(PDO::FETCH_ASSOC);
+        //json
+        // print_r($vehiculos);
 
-$app->get(
-    '/vehiculos/:nombre',function($nombre) use ($app){
-    //almaceno el ID
-    $id = $nombre;
-    include("./Connection.php");
-    $sql2 = " SET NAMES utf8 ";
-    $ejecucionSQL2 = $conexion->prepare($sql2);
-    $ejecucionSQL2 ->execute();
-    $sql = "SELECT * FROM vehiculo WHERE id = :id ";
-    $ejecucionSQL = $conexion->prepare($sql);
-    $ejecucionSQL ->execute(array("id"=>$id));
-    $vehiculos=$ejecucionSQL->fetch(PDO::FETCH_ASSOC);
-    //json
-   // print_r($vehiculos);
-
-  echo json_encode($vehiculos);
+        echo json_encode($vehiculos);
 
     }
-);
-$app->get(
-    '/transportes',function() use ($app){
+    );
+    $app->post(
+        '/crear', function () use ($app) {
+        //almaceno el ID
+        $vehiculos = json_decode(file_get_contents('php://input'), true);
+
+        $marca=$vehiculos["marca"];
+        $modelo=$vehiculos["modelo"];
+        $ano=$vehiculos["año"];
+        $patente=$vehiculos["patente"];
+
+        include("./Connection.php");
+
+         $sql = 'select * from vehiculo';
+         $ejecucionSQL = $conexion->prepare($sql);
+         $ejecucionSQL ->execute();
+         $params= array('marca' => $marca,'modelo'=> $modelo ,'año'=> $ano,'patente'=> $patente);
+         $sql = "INSERT INTO vehiculo (marca,modelo,año,patente) VALUES (:marca,:modelo,:año,:patente)";
+         $ejecucionSQL = $conexion->prepare($sql);
+         $ejecucionSQL ->execute($params);
+
+        //json
+       // print_r($vehiculos);
+
+
+
+    });
+});
+$app->group('/transportes', function () use ($app) {
+   $app->get(
+    '/',function() use ($app){
     include("./Connection.php");
     $sql2 = " SET NAMES utf8 ";
     $ejecucionSQL2 = $conexion->prepare($sql2);
@@ -66,9 +94,8 @@ $app->get(
 
 }
 );
-
-$app->get(
-    '/transportes/:nombre',function($nombre) use ($app){
+   $app->get(
+    '/:nombre',function($nombre) use ($app){
     //almaceno el ID
     $id = $nombre;
     include("./Connection.php");
@@ -85,8 +112,11 @@ $app->get(
 
 }
 );
-$app->get(
-    '/choferes',function() use ($app){
+});
+
+$app->group('/choferes', function () use ($app) {
+   $app->get(
+    '/',function() use ($app){
     include("./Connection.php");
     $sql2 = " SET NAMES utf8 ";
     $ejecucionSQL2 = $conexion->prepare($sql2);
@@ -101,9 +131,8 @@ $app->get(
 
 }
 );
-
-$app->get(
-    '/choferes/:nombre',function($nombre) use ($app){
+   $app->get(
+    '/:nombre',function($nombre) use ($app){
     //almaceno el ID
     $id = $nombre;
     include("./Connection.php");
@@ -119,6 +148,8 @@ $app->get(
     echo json_encode($chofer);
 }
 );
+});
+
 //inicializamos la aplicacion(API)
 $app->run();
 
