@@ -33,7 +33,7 @@ $app->group('/vehiculos', function () use ($app) {
         $sql2 = " SET NAMES utf8 ";
         $ejecucionSQL2 = $conexion->prepare($sql2);
         $ejecucionSQL2->execute();
-        $sql = "SELECT * FROM vehiculo WHERE id = :id ";
+        $sql = "SELECT * FROM vehiculo WHERE vehiculo_id = :id ";
         $ejecucionSQL = $conexion->prepare($sql);
         $ejecucionSQL->execute(array("id" => $id));
         $vehiculos = $ejecucionSQL->fetch(PDO::FETCH_ASSOC);
@@ -46,28 +46,37 @@ $app->group('/vehiculos', function () use ($app) {
         //almaceno el ID
         include("./Connection.php");
         $vehiculos = json_decode(file_get_contents('php://input'), true);
+        $patente=$vehiculos["patente"];
+        $anho_patente=$vehiculos["anho_patente"];
+        $anho_fabricacion=$vehiculos["anho_fabricacion"];
         $marca=$vehiculos["marca"];
         $modelo=$vehiculos["modelo"];
-        $año=$vehiculos["año"];
-        $patente=$vehiculos["patente"];
-        $params= array('marca' => $marca, 'modelo' => $modelo, 'año' => $año, 'patente' => $patente);
-        $sql = "INSERT INTO vehiculo (marca,modelo,año,patente) VALUES (:marca,:modelo,:año,:patente)";
+        date_default_timezone_set("America/Argentina/Buenos_Aires");
+        $created=date('Y-m-d H:i:s');
+
+        $params= array('patente' => $patente,'anho_patente' => $anho_patente,'anho_fabricacion' => $anho_fabricacion,'marca' => $marca ,'modelo' => $modelo,'created' => $created );
+        $sql = "INSERT INTO vehiculo (patente,anho_patente,anho_fabricacion,marca,modelo,created) VALUES (:patente,:anho_patente,:anho_fabricacion,:marca,:modelo,:created)";
         $ejecucionSQL = $conexion->prepare($sql);
         $ejecucionSQL->execute($params);
+
+
     });
     $app->put(
         '/actualizar/:nombre', function ($nombre) use ($app) {
         //almaceno el ID
-        $id = $nombre;
+        $vehiculo_id = $nombre;
         include("./Connection.php");
-        $sql2 = " SET NAMES utf8 ";
-        $ejecucionSQL2 = $conexion->prepare($sql2);
-        $ejecucionSQL2->execute();
         $vehiculos = json_decode(file_get_contents('php://input'), true);
-        $params= array('marca' => $vehiculos["marca"], 'modelo' => $vehiculos["modelo"], 'ano' => $vehiculos["año"], 'patente' => $vehiculos["patente"]);
-        $sql = "UPDATE vehiculo SET marca = :marca, modelo= :modelo , año= :ano , patente= :patente  WHERE `id` = :id";
+        $patente=$vehiculos["patente"];
+        $anho_patente=$vehiculos["anho_patente"];
+        $anho_fabricacion=$vehiculos["anho_fabricacion"];
+        $marca=$vehiculos["marca"];
+        $modelo=$vehiculos["modelo"];
+        $params= array('vehiculo_id' => $vehiculo_id,'patente' => $patente,'anho_patente' => $anho_patente,'anho_fabricacion' => $anho_fabricacion,'marca' => $marca ,'modelo' => $modelo );
+        $sql = "UPDATE vehiculo SET patente = :patente, anho_patente= :anho_patente ,anho_fabricacion= :anho_fabricacion, marca= :marca , modelo= :modelo  WHERE `vehiculo_id` = :vehiculo_id";
         $ejecucionSQL = $conexion->prepare($sql);
         $ejecucionSQL ->execute($params);
+       // print_r($params);
 
 
     });
@@ -80,95 +89,73 @@ $app->group('/vehiculos', function () use ($app) {
         $ejecucionSQL2 = $conexion->prepare($sql2);
         $ejecucionSQL2->execute();
         $params= array('id' => $id);
-        $sql = "DELETE FROM vehiculo  WHERE `id` = :id";
+        $sql = "DELETE FROM vehiculo  WHERE `vehiculo_id` = :id";
         $ejecucionSQL = $conexion->prepare($sql);
         $ejecucionSQL ->execute($params);
     });
 });
 $app->group('/transportes', function () use ($app) {
-   $app->get(
-    '/',function() use ($app){
-    include("./Connection.php");
-    $sql2 = " SET NAMES utf8 ";
-    $ejecucionSQL2 = $conexion->prepare($sql2);
-    $ejecucionSQL2 ->execute();
-    $sql = "SELECT * FROM transporte ";
-    $ejecucionSQL = $conexion->prepare($sql);
-    $ejecucionSQL ->execute();
-    $transporte=$ejecucionSQL->fetchAll(PDO::FETCH_ASSOC);
-    //json
-     //print_r($transporte);
-   echo json_encode($transporte);
+    $app->get(
+        '/', function () use ($app) {
+        include("./Connection.php");
+        $sql2 = " SET NAMES utf8 ";
+        $ejecucionSQL2 = $conexion->prepare($sql2);
+        $ejecucionSQL2->execute();
+        $sql = "SELECT * FROM sistema_transporte ";
+        $ejecucionSQL = $conexion->prepare($sql);
+        $ejecucionSQL->execute();
+        $transporte = $ejecucionSQL->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($transporte);
 
-}
-);
-   $app->get(
-    '/:nombre',function($nombre) use ($app){
-    //almaceno el ID
-    $id = $nombre;
-    include("./Connection.php");
-    $sql2 = " SET NAMES utf8 ";
-    $ejecucionSQL2 = $conexion->prepare($sql2);
-    $ejecucionSQL2 ->execute();
-    $sql = "SELECT * FROM transporte WHERE id = :id ";
-    $ejecucionSQL = $conexion->prepare($sql);
-    $ejecucionSQL ->execute(array("id"=>$id));
-    $transporte=$ejecucionSQL->fetch(PDO::FETCH_ASSOC);
-    //json
-     //print_r($transporte);
-    echo json_encode($transporte);
+    }
+    );
+    $app->get(
+        '/:nombre', function ($nombre) use ($app) {
+        //almaceno el ID
+        $id = $nombre;
+        include("./Connection.php");
+        $sql2 = " SET NAMES utf8 ";
+        $ejecucionSQL2 = $conexion->prepare($sql2);
+        $ejecucionSQL2->execute();
+        $sql = "SELECT * FROM sistema_transporte WHERE sistema_id = :id ";
+        $ejecucionSQL = $conexion->prepare($sql);
+        $ejecucionSQL->execute(array("id" => $id));
+        $transportes = $ejecucionSQL->fetch(PDO::FETCH_ASSOC);
+        echo json_encode($transportes);
+    });
+    $app->post(
+        '/crear', function () use ($app) {
+        //almaceno el ID
+        include("./Connection.php");
+        $transportes = json_decode(file_get_contents('php://input'), true);
+        $nombre=$transportes["nombre"];
+        $pais_procedencia=$transportes["pais_procedencia"];
+        date_default_timezone_set("America/Argentina/Buenos_Aires");
+        $created=date('Y-m-d H:i:s');
+        $params= array('nombre' => $nombre,'pais_procedencia' => $pais_procedencia,'pais_procedencia' => $pais_procedencia,'created' => $created );
+        $sql = "INSERT INTO sistema_transporte (nombre,pais_procedencia,created) VALUES (:nombre,:pais_procedencia,:created)";
+        $ejecucionSQL = $conexion->prepare($sql);
+        $ejecucionSQL->execute($params);
 
-}
-);
-});
-   $app->delete(
-    '/eliminar/:nombre', function ($nombre) use ($app) {
-    //almaceno el ID
-    $id = $nombre;
-    include("./Connection.php");
-    $sql2 = " SET NAMES utf8 ";
-    $ejecucionSQL2 = $conexion->prepare($sql2);
-    $ejecucionSQL2->execute();
-    $params= array('id' => $id);
-    $sql = "DELETE FROM transporte WHERE `id` = :id";
-    $ejecucionSQL = $conexion->prepare($sql);
-    $ejecucionSQL ->execute($params);
-});
-$app->group('/choferes', function () use ($app) {
-   $app->get(
-    '/',function() use ($app){
-    include("./Connection.php");
-    $sql2 = " SET NAMES utf8 ";
-    $ejecucionSQL2 = $conexion->prepare($sql2);
-    $ejecucionSQL2 ->execute();
-    $sql = "SELECT * FROM chofer ";
-    $ejecucionSQL = $conexion->prepare($sql);
-    $ejecucionSQL ->execute();
-    $chofer=$ejecucionSQL->fetchAll(PDO::FETCH_ASSOC);
-    //json
-       // print_r($chofer);
-       echo json_encode($chofer);
 
-}
-);
-   $app->get(
-    '/:nombre',function($nombre) use ($app){
-    //almaceno el ID
-    $id = $nombre;
-    include("./Connection.php");
-    $sql2 = " SET NAMES utf8 ";
-    $ejecucionSQL2 = $conexion->prepare($sql2);
-    $ejecucionSQL2 ->execute();
-    $sql = "SELECT * FROM chofer WHERE id = :id ";
-    $ejecucionSQL = $conexion->prepare($sql);
-    $ejecucionSQL ->execute(array("id"=>$id));
-    $chofer=$ejecucionSQL->fetch(PDO::FETCH_ASSOC);
-    //json
-    //print_r($chofer);
-    echo json_encode($chofer);
-}
-);
-   $app->delete(
+    });
+    $app->put(
+        '/actualizar/:nombre', function ($nombre) use ($app) {
+        //almaceno el ID
+        $sistema_id = $nombre;
+        include("./Connection.php");
+        $transportes = json_decode(file_get_contents('php://input'), true);
+        $nombre=$transportes["nombre"];
+        $pais_procedencia=$transportes["pais_procedencia"];
+        $params= array('sistema_id' => $sistema_id,'nombre' => $nombre, 'pais_procedencia' => $pais_procedencia  );
+        $sql = "UPDATE sistema_transporte SET nombre = :nombre,pais_procedencia= :pais_procedencia   WHERE `sistema_id` = :sistema_id";
+        $ejecucionSQL = $conexion->prepare($sql);
+        $ejecucionSQL ->execute($params);
+        // print_r($params);
+
+
+    });
+    $app->delete(
         '/eliminar/:nombre', function ($nombre) use ($app) {
         //almaceno el ID
         $id = $nombre;
@@ -177,12 +164,87 @@ $app->group('/choferes', function () use ($app) {
         $ejecucionSQL2 = $conexion->prepare($sql2);
         $ejecucionSQL2->execute();
         $params= array('id' => $id);
-        $sql = "DELETE FROM chofer  WHERE `id` = :id";
+        $sql = "DELETE FROM sistema_transporte  WHERE `sistema_id` = :id";
         $ejecucionSQL = $conexion->prepare($sql);
         $ejecucionSQL ->execute($params);
     });
 });
+$app->group('/choferes', function () use ($app) {
 
+});
+    $app->get(
+    '/', function () use ($app) {
+    include("./Connection.php");
+    $sql2 = " SET NAMES utf8 ";
+    $ejecucionSQL2 = $conexion->prepare($sql2);
+    $ejecucionSQL2->execute();
+    $sql = "SELECT * FROM sistema_transporte ";
+    $ejecucionSQL = $conexion->prepare($sql);
+    $ejecucionSQL->execute();
+    $transporte = $ejecucionSQL->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($transporte);
+
+}
+);
+    $app->get(
+    '/:nombre', function ($nombre) use ($app) {
+    //almaceno el ID
+    $id = $nombre;
+    include("./Connection.php");
+    $sql2 = " SET NAMES utf8 ";
+    $ejecucionSQL2 = $conexion->prepare($sql2);
+    $ejecucionSQL2->execute();
+    $sql = "SELECT * FROM sistema_transporte WHERE sistema_id = :id ";
+    $ejecucionSQL = $conexion->prepare($sql);
+    $ejecucionSQL->execute(array("id" => $id));
+    $transportes = $ejecucionSQL->fetch(PDO::FETCH_ASSOC);
+    echo json_encode($transportes);
+});
+    $app->post(
+    '/crear', function () use ($app) {
+    //almaceno el ID
+    include("./Connection.php");
+    $transportes = json_decode(file_get_contents('php://input'), true);
+    $nombre=$transportes["nombre"];
+    $pais_procedencia=$transportes["pais_procedencia"];
+    date_default_timezone_set("America/Argentina/Buenos_Aires");
+    $created=date('Y-m-d H:i:s');
+    $params= array('nombre' => $nombre,'pais_procedencia' => $pais_procedencia,'pais_procedencia' => $pais_procedencia,'created' => $created );
+    $sql = "INSERT INTO sistema_transporte (nombre,pais_procedencia,created) VALUES (:nombre,:pais_procedencia,:created)";
+    $ejecucionSQL = $conexion->prepare($sql);
+    $ejecucionSQL->execute($params);
+
+
+});
+    $app->put(
+    '/actualizar/:nombre', function ($nombre) use ($app) {
+    //almaceno el ID
+    $sistema_id = $nombre;
+    include("./Connection.php");
+    $transportes = json_decode(file_get_contents('php://input'), true);
+    $nombre=$transportes["nombre"];
+    $pais_procedencia=$transportes["pais_procedencia"];
+    $params= array('sistema_id' => $sistema_id,'nombre' => $nombre, 'pais_procedencia' => $pais_procedencia  );
+    $sql = "UPDATE sistema_transporte SET nombre = :nombre,pais_procedencia= :pais_procedencia   WHERE `sistema_id` = :sistema_id";
+    $ejecucionSQL = $conexion->prepare($sql);
+    $ejecucionSQL ->execute($params);
+    // print_r($params);
+
+
+});
+    $app->delete(
+    '/eliminar/:nombre', function ($nombre) use ($app) {
+    //almaceno el ID
+    $id = $nombre;
+    include("./Connection.php");
+    $sql2 = " SET NAMES utf8 ";
+    $ejecucionSQL2 = $conexion->prepare($sql2);
+    $ejecucionSQL2->execute();
+    $params= array('id' => $id);
+    $sql = "DELETE FROM sistema_transporte  WHERE `sistema_id` = :id";
+    $ejecucionSQL = $conexion->prepare($sql);
+    $ejecucionSQL ->execute($params);
+});
 //inicializamos la aplicacion(API)
 $app->run();
 

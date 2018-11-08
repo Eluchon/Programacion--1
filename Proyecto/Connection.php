@@ -2,6 +2,6 @@
 $servidor = "localhost";
 $usuario = "root";
 $clave = "";
-$base = "proyectoprogramacion1";
+$base = "transporte";
 $conexion = new PDO("mysql:host=$servidor;dbname=$base",$usuario,$clave);
 ?>
