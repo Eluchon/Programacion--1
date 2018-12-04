@@ -13,14 +13,25 @@ if(empty($_SESSION['login'])){
     <input type="submit" name="volver" value="Volver">
 </form>
 <?php
+
+
 if(!empty($_POST["enviar"]) && !empty($_POST["nusuario"]) && !empty($_POST["npassword"])){
 $usuario=$_POST["nusuario"];
 $clave=$_POST["npassword"];
-$params = array('usuario' => $usuario, 'clave' => $clave);
-$sql = "INSERT INTO usuario (usuario,clave) VALUES (:usuario,:clave)";
-$ejecucionSQL = $conexion->prepare($sql);
-$ejecucionSQL->execute($params);
-header('Location: admusu.php');
+//parte para comprobar que no existe otro usuario
+    $sql = "SELECT * FROM usuario WHERE usuario = :usuario ";
+    $ejecucionSQL = $conexion->prepare($sql);
+    $ejecucionSQL->execute(array("usuario" => $usuario));
+    $arrayusuario = $ejecucionSQL->fetch(PDO::FETCH_ASSOC);
+    if (!empty($arrayusuario)){
+        echo "El usuario ya existe";
+    }else {
+        $params = array('usuario' => $usuario, 'clave' => $clave);
+        $sql = "INSERT INTO usuario (usuario,clave) VALUES (:usuario,:clave)";
+        $ejecucionSQL = $conexion->prepare($sql);
+        $ejecucionSQL->execute($params);
+        echo "Usuario creado";
+    }
 }
 if (!empty($_POST["volver"])){
     header('Location: admusu.php');

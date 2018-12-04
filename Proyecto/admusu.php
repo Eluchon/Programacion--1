@@ -35,7 +35,6 @@ echo "<table cellspacing='2' cellpadding='2' border='1' bgcolor=FBEFEF" ;
         <th>ID</th>
         <th>Usuario</th>
         <th>Clave</th>
-        <th>Token</th>
     </tr>
 <?php
 while ($fila = $ejecucionSQL->fetch(PDO::FETCH_ASSOC)) {

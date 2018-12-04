@@ -1,20 +1,25 @@
 <?php
 header('Content-Type: text/html; charset=utf-8');
+//parte de seguridad
 include ("Connection.php");
 
+$usuario=$_SERVER["PHP_AUTH_USER"];
+$clave=$_SERVER["PHP_AUTH_PW"];
 
-if ($_SERVER['PHP_AUTH_USER'] !== 'Luis' || $_SERVER['PHP_AUTH_PW'] !== '123'){
+$sql = "SELECT * FROM usuario WHERE usuario = :usuario ";
+$ejecucionSQL = $conexion->prepare($sql);
+$ejecucionSQL->execute(array("usuario" => $usuario));
+$arrayusuario = $ejecucionSQL->fetch(PDO::FETCH_ASSOC);
+
+if ($usuario != $arrayusuario["usuario"] || $clave != $arrayusuario["clave"]){
+
     header("WWW-Aunthenticate: Basic realm=\"thetutlage\"");
     header('HTTP/1.1 401 Unauthorized');
     echo "No autorizado";
     exit;
 }
-
-
-//incluir el archivo principal
 include("Slim/Slim.php");
 include ("token.php");
-//if(token($_GET['token']) != false) {
 //registran la instancia de slim
     \Slim\Slim::registerAutoloader();
 //aplicacion
@@ -322,4 +327,4 @@ include ("token.php");
 //inicializamos la aplicacion(API)
     $app->run();
 
-//}
+
