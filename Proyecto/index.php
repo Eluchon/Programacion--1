@@ -28,6 +28,9 @@ include("Slim/Slim.php");
         $app->get(
             '/', function () use ($app) {
             include("./Connection.php");
+
+            $before_time=microtime(true); // Inicio el tiempo
+
             $sql2 = " SET NAMES utf8 ";
             $ejecucionSQL2 = $conexion->prepare($sql2);
             $ejecucionSQL2->execute();
@@ -36,6 +39,20 @@ include("Slim/Slim.php");
             $ejecucionSQL->execute();
             $vehiculos = $ejecucionSQL->fetchAll(PDO::FETCH_ASSOC);
             echo json_encode($vehiculos);
+            //auditoria
+            $after_time=microtime(true);
+            date_default_timezone_set("America/Argentina/Buenos_Aires");
+            $fecha_acceso=date('Y-m-d H:i:s') ;
+            $usuario=$_SERVER["PHP_AUTH_USER"];
+            $response_time= ($after_time-$before_time)*pow(10,3);
+            $endpoint='http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+
+            $params=array('fecha_acceso' => $fecha_acceso, 'usuario' => $usuario, 'response_time' => $response_time, 'endpoint' => $endpoint);
+            $sql = "INSERT INTO auditoria (fecha_acceso,usuario,response_time,endpoint) VALUES (:fecha_acceso,:usuario,:response_time,:endpoint)";
+            $ejecucionSQL = $conexion->prepare($sql);
+            $ejecucionSQL->execute($params);
+
+
         }
         );
         $app->get(
@@ -43,6 +60,9 @@ include("Slim/Slim.php");
             //almaceno el ID
             $id = $nombre;
             include("./Connection.php");
+
+            $before_time=microtime(true); // Inicio el tiempo
+
             $sql2 = " SET NAMES utf8 ";
             $ejecucionSQL2 = $conexion->prepare($sql2);
             $ejecucionSQL2->execute();
@@ -51,13 +71,27 @@ include("Slim/Slim.php");
             $ejecucionSQL->execute(array("id" => $id));
             $vehiculos = $ejecucionSQL->fetch(PDO::FETCH_ASSOC);
             echo json_encode($vehiculos);
+            //auditoria
+            $after_time=microtime(true);
+            date_default_timezone_set("America/Argentina/Buenos_Aires");
+            $fecha_acceso=date('Y-m-d H:i:s') ;
+            $usuario=$_SERVER["PHP_AUTH_USER"];
+            $response_time= ($after_time-$before_time)*pow(10,3);
+            $endpoint='http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 
+            $params=array('fecha_acceso' => $fecha_acceso, 'usuario' => $usuario, 'response_time' => $response_time, 'endpoint' => $endpoint);
+            $sql = "INSERT INTO auditoria (fecha_acceso,usuario,response_time,endpoint) VALUES (:fecha_acceso,:usuario,:response_time,:endpoint)";
+            $ejecucionSQL = $conexion->prepare($sql);
+            $ejecucionSQL->execute($params);
         }
         );
         $app->post(
             '/crear', function () use ($app) {
             //almaceno el ID
             include("./Connection.php");
+
+            $before_time=microtime(true); // Inicio el tiempo
+
             $vehiculos = json_decode(file_get_contents('php://input'), true);
             $patente = $vehiculos["patente"];
             $anho_patente = $vehiculos["anho_patente"];
@@ -66,9 +100,20 @@ include("Slim/Slim.php");
             $modelo = $vehiculos["modelo"];
             date_default_timezone_set("America/Argentina/Buenos_Aires");
             $created = date('Y-m-d H:i:s');
-
             $params = array('patente' => $patente, 'anho_patente' => $anho_patente, 'anho_fabricacion' => $anho_fabricacion, 'marca' => $marca, 'modelo' => $modelo, 'created' => $created);
             $sql = "INSERT INTO vehiculo (patente,anho_patente,anho_fabricacion,marca,modelo,created) VALUES (:patente,:anho_patente,:anho_fabricacion,:marca,:modelo,:created)";
+            $ejecucionSQL = $conexion->prepare($sql);
+            $ejecucionSQL->execute($params);
+            //auditoria
+            $after_time=microtime(true);
+            date_default_timezone_set("America/Argentina/Buenos_Aires");
+            $fecha_acceso=date('Y-m-d H:i:s') ;
+            $usuario=$_SERVER["PHP_AUTH_USER"];
+            $response_time= ($after_time-$before_time)*pow(10,3);
+            $endpoint='http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+
+            $params=array('fecha_acceso' => $fecha_acceso, 'usuario' => $usuario, 'response_time' => $response_time, 'endpoint' => $endpoint);
+            $sql = "INSERT INTO auditoria (fecha_acceso,usuario,response_time,endpoint) VALUES (:fecha_acceso,:usuario,:response_time,:endpoint)";
             $ejecucionSQL = $conexion->prepare($sql);
             $ejecucionSQL->execute($params);
 
@@ -79,6 +124,8 @@ include("Slim/Slim.php");
             //almaceno el ID
             $vehiculo_id = $nombre;
             include("./Connection.php");
+            $before_time=microtime(true); // Inicio el tiempo
+
             $vehiculos = json_decode(file_get_contents('php://input'), true);
             if (!empty ($vehiculos["patente"])){
                 $patente = $vehiculos["patente"];
@@ -115,7 +162,18 @@ include("Slim/Slim.php");
                 $ejecucionSQL = $conexion->prepare($sql);
                 $ejecucionSQL->execute($params);
             }
-            // print_r($params);
+            //auditoria
+            $after_time=microtime(true);
+            date_default_timezone_set("America/Argentina/Buenos_Aires");
+            $fecha_acceso=date('Y-m-d H:i:s') ;
+            $usuario=$_SERVER["PHP_AUTH_USER"];
+            $response_time= ($after_time-$before_time)*pow(10,3);
+            $endpoint='http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+
+            $params=array('fecha_acceso' => $fecha_acceso, 'usuario' => $usuario, 'response_time' => $response_time, 'endpoint' => $endpoint);
+            $sql = "INSERT INTO auditoria (fecha_acceso,usuario,response_time,endpoint) VALUES (:fecha_acceso,:usuario,:response_time,:endpoint)";
+            $ejecucionSQL = $conexion->prepare($sql);
+            $ejecucionSQL->execute($params);
 
         });
         $app->delete(
@@ -123,6 +181,9 @@ include("Slim/Slim.php");
             //almaceno el ID
             $id = $nombre;
             include("./Connection.php");
+
+            $before_time=microtime(true); // Inicio el
+
             $sql2 = " SET NAMES utf8 ";
             $ejecucionSQL2 = $conexion->prepare($sql2);
             $ejecucionSQL2->execute();
@@ -130,8 +191,20 @@ include("Slim/Slim.php");
             $sql = "DELETE FROM vehiculo  WHERE `vehiculo_id` = :id";
             $ejecucionSQL = $conexion->prepare($sql);
             $ejecucionSQL->execute($params);
+            //auditoria
+            $after_time=microtime(true);
+            date_default_timezone_set("America/Argentina/Buenos_Aires");
+            $fecha_acceso=date('Y-m-d H:i:s') ;
+            $usuario=$_SERVER["PHP_AUTH_USER"];
+            $response_time= ($after_time-$before_time)*pow(10,3);
+            $endpoint='http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+
+            $params=array('fecha_acceso' => $fecha_acceso, 'usuario' => $usuario, 'response_time' => $response_time, 'endpoint' => $endpoint);
+            $sql = "INSERT INTO auditoria (fecha_acceso,usuario,response_time,endpoint) VALUES (:fecha_acceso,:usuario,:response_time,:endpoint)";
+            $ejecucionSQL = $conexion->prepare($sql);
+            $ejecucionSQL->execute($params);
         });
-    });
+    }); //completa
     $app->group('/transportes', function () use ($app) {
         $app->get(
             '/', function () use ($app) {
@@ -323,7 +396,7 @@ include("Slim/Slim.php");
             $ejecucionSQL->execute($params);
         });
     });
-//inicializamos la aplicacion(API)
+//inicializamos la API
     $app->run();
 
 
