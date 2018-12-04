@@ -4,7 +4,7 @@ header('Content-Type: text/html; charset=utf-8');
 include ("Connection.php");
 
 $usuario=$_SERVER["PHP_AUTH_USER"];
-$clave=$_SERVER["PHP_AUTH_PW"];
+$clave=hash('sha256',$_SERVER["PHP_AUTH_PW"]);
 
 $sql = "SELECT * FROM usuario WHERE usuario = :usuario ";
 $ejecucionSQL = $conexion->prepare($sql);
@@ -19,7 +19,6 @@ if ($usuario != $arrayusuario["usuario"] || $clave != $arrayusuario["clave"]){
     exit;
 }
 include("Slim/Slim.php");
-include ("token.php");
 //registran la instancia de slim
     \Slim\Slim::registerAutoloader();
 //aplicacion

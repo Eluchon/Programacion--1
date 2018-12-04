@@ -26,7 +26,7 @@ if(!empty($_POST["enviar"]) && !empty($_POST["id"])){
     if (!empty ($_POST["actclave"])&& !empty($_POST["id"])){
         $user_id=$_POST["id"];
         $clave = $_POST["actclave"];
-        $params = array('user_id' => $user_id, 'clave' => $clave);
+        $params = array('user_id' => $user_id, 'clave' => hash('sha256',$clave));
         $sql = "UPDATE usuario SET clave = :clave WHERE `user_id` = :user_id";
         $ejecucionSQL = $conexion->prepare($sql);
         $ejecucionSQL->execute($params);

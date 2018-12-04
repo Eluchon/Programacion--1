@@ -26,7 +26,7 @@ $clave=$_POST["npassword"];
     if (!empty($arrayusuario)){
         echo "El usuario ya existe";
     }else {
-        $params = array('usuario' => $usuario, 'clave' => $clave);
+        $params = array('usuario' => $usuario, 'clave' => hash('sha256',$clave));
         $sql = "INSERT INTO usuario (usuario,clave) VALUES (:usuario,:clave)";
         $ejecucionSQL = $conexion->prepare($sql);
         $ejecucionSQL->execute($params);
