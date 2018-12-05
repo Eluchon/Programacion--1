@@ -1,7 +1,7 @@
 <?php
 session_start();
 include("./Connection.php");
-$params= array('usuario'=>$_POST['usuario'],'clave' => $_POST['password']);
+$params= array('usuario'=>$_POST['usuario'],'clave' => hash('sha256',$_POST['password']));
 $sql = "SELECT * FROM usuario WHERE usuario = :usuario AND clave = :clave";
 $ejecucionSQL = $conexion->prepare($sql);
 $ejecucionSQL ->execute($params);
