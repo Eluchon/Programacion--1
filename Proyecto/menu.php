@@ -13,6 +13,8 @@ if(empty($_SESSION['login'])){
     <title>Menu</title>
 </head>
 <body>
+<h1>Menu</h1>
+<br>
 <form action="admusu.php" method="POST" enctype="multipart/form-data">
     <input type="submit" value="Administracion de Usuarios" name="adm">
     <br><br>

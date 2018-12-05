@@ -6,6 +6,8 @@ if(empty($_SESSION['login'])){
     exit;
 }else
 ?>
+    <h1>Administracion Usuario</h1>
+    <br>
 <form action="agregarusu.php" method="POST" enctype="multipart/form-data">
     <input type="submit" value="Agregar Usuario" name="agregar">
     <br><br>
