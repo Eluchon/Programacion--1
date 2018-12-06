@@ -6,6 +6,8 @@ if(empty($_SESSION['login'])){
     exit;
 }else
     ?>
+    <h1>Actualizar Usuario</h1>
+    <br>
     <form action="actusu.php" method="POST" enctype="multipart/form-data">
         <div>Id del usuario *obligatorio</div><br><input type="number" name="id"><br><br>
         <div>Cambiar nombre de usuario </div><br><input type="text" name="actusuario"><br><br>

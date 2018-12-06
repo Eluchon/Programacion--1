@@ -6,6 +6,8 @@ if(empty($_SESSION['login'])){
     exit;
 }else
     ?>
+    <h1>Eliminar Usuario</h1>
+    <br>
     <form action="elimusu.php" method="POST" enctype="multipart/form-data">
         <div> ID del usuario </div><br><input type="text" name="id"><br><br>
         <input type="submit" name="enviar">

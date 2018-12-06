@@ -35,6 +35,7 @@ if(empty($_POST["enviar"])) {
         file_put_contents("auditoria.txt", $auditoria);
         header ("Content-Disposition: attachment; filename=auditoria.txt");
         header ("Content-Type: application/octet-stream");
+        header('Content-Transfer-Encoding: binary');
         readfile("auditoria.txt");
     }
 
